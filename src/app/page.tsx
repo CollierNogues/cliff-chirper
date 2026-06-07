@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // Custom frog icon component - thick green blob with white belly + eye
-// Frog icon optimized for small sizes (legible at ~20px)
 const FrogIcon = ({ size = 20, className = "" }) => (
   <svg 
     width={size} 
@@ -18,24 +17,20 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    {/* Head shape - upside-down U (open bottom) */}
-    <path d="M6 16 C6 9, 8 5, 12 5 C16 5, 18 9, 18 16" />
+    {/* Head and snout profile (right-facing) */}
+    <path d="M10,6 C14,6 17,7 19,9.5 C20.5,11 20.5,13 19,15 C17,17 14,18 10,18 C5,18 5,6 10,6 Z" />
     
-    {/* Left eye bump */}
-    <circle cx="8.5" cy="7" r="2.5" />
+    {/* Eye bump (protruding on upper right) */}
+    <circle cx="12.5" cy="7" r="2.5" />
     
-    {/* Right eye bump */}
-    <circle cx="15.5" cy="7" r="2.5" />
+    {/* Eye pupil */}
+    <circle cx="13" cy="7" r="0.9" fill="currentColor" />
     
-    {/* Left eye pupil */}
-    <circle cx="8.5" cy="7" r="1" fill="currentColor" />
+    {/* Nostril */}
+    <circle cx="18" cy="11" r="0.6" />
     
-    {/* Right eye pupil */}
-    <circle cx="15.5" cy="7" r="1" fill="currentColor" />
-    
-    {/* Nostrils */}
-    <circle cx="10.5" cy="11" r="0.6" />
-    <circle cx="13.5" cy="11" r="0.6" />
+    {/* Smiling mouth */}
+    <path d="M15,13.5 Q17,14.5 18.5,12.5" />
   </svg>
 );
 
