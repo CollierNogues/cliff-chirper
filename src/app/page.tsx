@@ -3,35 +3,56 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Custom frog icon component - minimalist angular frog (back slope, one leg, face)
-const FrogIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
+// Custom frog icon component - thick green blob with white belly + eye
+const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 128 128"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    fill="none"
   >
-    {/* Slope of the frog's back - curved/angled line from rear to head */}
-    <path d="M5 16 L8 8 L14 6 L18 9" />
-    
-    {/* Frog leg - single angular back leg */}
-    <polyline points="5,16 3,18.5 5.5,19" />
-    
-    {/* Frog face - angular, facing right */}
-    {/* Jaw/chin line */}
-    <polyline points="18,9 19.5,11 18.5,12.5" />
-    
-    {/* Eye - angular geometric */}
-    <polygon points="16.5,7 18,6 18.5,7.5 17,8" />
-    
-    {/* Nostril/snout detail */}
-    <line x1="19" y1="10" x2="20" y2="10.5" />
+    {/* Outer body */}
+    <path
+      d="M23 78
+         C16 70, 18 57, 29 52
+         C39 47, 53 36, 68 34
+         C84 31, 96 38, 105 45
+         C114 52, 116 66, 108 78
+         C100 90, 80 99, 60 100
+         C43 101, 31 93, 23 78
+         Z"
+      fill="#1f4f35"
+    />
+
+    {/* Head/neck bump smoothing (helps mimic the thick outline look) */}
+    <path
+      d="M49 46
+         C50 34, 63 26, 78 26
+         C93 26, 104 36, 104 50
+         C104 63, 92 73, 78 73
+         C64 73, 49 62, 49 46
+         Z"
+      fill="#1f4f35"
+    />
+
+    {/* White belly / inner face */}
+    <path
+      d="M42 63
+         C46 52, 60 48, 74 52
+         C90 57, 96 69, 90 79
+         C84 89, 66 92, 54 84
+         C45 78, 39 72, 42 63
+         Z"
+      fill="#ffffff"
+    />
+
+    {/* Eye rim */}
+    <circle cx="76" cy="40" r="10" fill="#1f4f35" />
+
+    {/* Eye pupil (small dark dot) */}
+    <circle cx="76" cy="40" r="4.8" fill="#0f2c1c" />
   </svg>
 );
 
