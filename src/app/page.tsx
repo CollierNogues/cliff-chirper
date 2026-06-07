@@ -9,6 +9,10 @@ interface Message {
   timestamp?: number;
   id: string;
   isFloating?: boolean;
+  isFalling?: boolean;
+  fallX?: number;
+  fallY?: number;
+  rotation?: number;
 }
 
 export default function Home() {
@@ -20,6 +24,7 @@ export default function Home() {
       id: 'system-prompt',
     },
   ]);
+  const [fallingMessages, setFallingMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +39,7 @@ export default function Home() {
   const recognitionRef = useRef<any>(null);
   const continuousListeningRef = useRef(continuousListening);
   const messagesRef = useRef(messages);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -50,6 +56,37 @@ export default function Home() {
 
   useEffect(() => {
     messagesRef.current = messages;
+  }, [messages]);
+
+  // Function to make a message fall like a raindrop
+  const makeMessageFall = (message: Message) => {
+    // Generate random horizontal scatter (-50 to 50 pixels) and slight rotation
+    const scatterX = (Math.random() - 0.5) * 100;
+    const rotation = (Math.random() - 0.5) * 30;
+    
+    setFallingMessages(prev => [...prev, {
+      ...message,
+      isFalling: true,
+      fallX: scatterX,
+      rotation: rotation,
+      timestamp: Date.now()
+    }]);
+
+    // Remove from falling messages after animation completes (3 seconds)
+    setTimeout(() => {
+      setFallingMessages(prev => prev.filter(m => m.id !== message.id));
+    }, 3000);
+  };
+
+  // Trigger falling effect for new messages
+  useEffect(() => {
+    const latestMessage = messages[messages.length - 1];
+    if (latestMessage && latestMessage.role !== 'system' && !latestMessage.isFloating) {
+      const timer = setTimeout(() => {
+        makeMessageFall(latestMessage);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
   }, [messages]);
 
   // Handle auto-submit from speech recognition with fresh state
@@ -98,6 +135,7 @@ export default function Home() {
           content: assistantMessage.content,
           timestamp: Date.now(),
           id: `assistant-${Date.now()}`,
+          isFloating: true,
         },
       ]);
 
@@ -114,6 +152,7 @@ export default function Home() {
           content: errorMsg,
           timestamp: Date.now(),
           id: `error-${Date.now()}`,
+          isFloating: true,
         },
       ]);
       
@@ -470,6 +509,7 @@ export default function Home() {
           content: assistantMessage.content,
           timestamp: Date.now(),
           id: `assistant-${Date.now()}`,
+          isFloating: true,
         },
       ]);
 
@@ -489,6 +529,7 @@ export default function Home() {
           content: errorMsg,
           timestamp: Date.now(),
           id: `error-${Date.now()}`,
+          isFloating: true,
         },
       ]);
       
@@ -507,8 +548,43 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#2d2d2d', color: 'white', fontFamily: '"Times New Roman", Times, serif' }}>
-      <div className="container mx-auto max-w-4xl px-3 py-8">
+    <div className="min-h-screen relative" style={{ backgroundColor: '#2d2d2d', color: 'white', fontFamily: '"Times New Roman", Times, serif', overflowX: 'hidden' }}>
+      {/* Water ripple effect at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 h-32 pointer-events-none" style={{
+        background: 'linear-gradient(to top, rgba(45,45,45,0.9), transparent)',
+        zIndex: 5
+      }}>
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-400/30 animate-pulse"></div>
+      </div>
+
+      {/* Falling messages - raindrop effect */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 10 }}>
+        {fallingMessages.map((msg) => (
+          <div
+            key={msg.id}
+            className="absolute animate-fall"
+            style={{
+              left: `calc(50% + ${msg.fallX || 0}px)`,
+              top: '-100px',
+              transform: `rotate(${msg.rotation || 0}deg)`,
+              animation: `fall 3s ease-in forwards`,
+              maxWidth: '300px',
+              backgroundColor: msg.role === 'user' ? '#000' : '#fff',
+              color: msg.role === 'user' ? '#fff' : '#000',
+              border: '2px solid #000',
+              padding: '8px 12px',
+              fontSize: '12px',
+              fontFamily: '"Times New Roman", Times, serif',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              borderRadius: '4px'
+            }}
+          >
+            {msg.content}
+          </div>
+        ))}
+      </div>
+
+      <div className="container mx-auto max-w-4xl px-3 py-8 relative" style={{ zIndex: 1 }}>
         <div className="bg-white border-4 border-black">
           <div className="h-[700px] flex flex-col">
             <div className="p-3 bg-white border-b-4 border-black">
@@ -573,11 +649,11 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-3 space-y-4 bg-white">
+            <div className="flex-1 overflow-y-auto p-3 space-y-4 bg-white" ref={containerRef}>
               {messages.slice(1).map((message) => (
                 <div
                   key={message.id}
-                  className={`flex items-start space-x-2 ${
+                  className={`flex items-start space-x-2 transition-all duration-500 ${
                     message.role === 'user' ? 'justify-end' : 'justify-start'
                   }`}
                 >
@@ -687,6 +763,23 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fall {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(calc(100vh + 100px)) rotate(var(--rotation, 0deg));
+            opacity: 0.3;
+          }
+        }
+        
+        .animate-fall {
+          animation: fall 3s ease-in forwards;
+        }
+      `}</style>
     </div>
   );
 }
