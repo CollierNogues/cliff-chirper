@@ -4,20 +4,52 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // Simple circle outline icon
-const CircleIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
+// Detailed frog icon facing right, optimized for 40px size
+const FrogIcon = ({ size = 40, className = "" }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     stroke="currentColor"
-    strokeWidth="1.8"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <circle cx="12" cy="12" r="9" />
+    {/* Body (rounded rear, tapering to head) */}
+    <path d="M14,7 C18,7 21,10 21,14 C21,17 18,20 13,20 C8,20 5,17 5,13 C5,9 9,7 14,7 Z" />
+
+    {/* Head and snout (right side) */}
+    <path d="M14,7 C16,7 19,8 20,10.5 C20.5,11.8 20,13 19,13.5 C18,14 16,13.5 15,13" />
+
+    {/* Bulging eye (on top of head) */}
+    <circle cx="15.5" cy="7.8" r="2.2" />
+
+    {/* Eye pupil (looking right) */}
+    <circle cx="16.3" cy="7.6" r="1" fill="currentColor" />
+
+    {/* Eye highlight */}
+    <circle cx="16.8" cy="7.1" r="0.4" fill="white" />
+
+    {/* Mouth – wide frog smile */}
+    <path d="M16.5,12.5 Q19,13 19.5,11.5" />
+
+    {/* Nostril */}
+    <circle cx="18.5" cy="10.5" r="0.5" />
+
+    {/* Front leg with toes (right side) */}
+    <path d="M18,16 L19.5,18 M18,16 L20,17.5 M18,16 L20.5,18" />
+
+    {/* Hind leg (folded, frog-like) */}
+    <path d="M12,18 C10,19 8,19.5 7,18.5 C6,17.5 7,16 8.5,15.5" />
+
+    {/* Hind foot with webbing hint */}
+    <path d="M7,18.5 L5.5,19 M7,18.5 L6,20 M7,18.5 L4.5,19.5" />
+
+    {/* Belly / underbelly line for depth */}
+    <path d="M11,19 C9,19 7,18 6.5,16" strokeWidth="1" strokeOpacity="0.6" />
   </svg>
 );
 
