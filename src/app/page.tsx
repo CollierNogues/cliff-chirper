@@ -1,7 +1,36 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Mic, Square, Send, Volume2, User, Bot } from 'lucide-react';
+import { Mic, Square, Send, Volume2, User } from 'lucide-react';
+
+// Custom frog icon component
+const FrogIcon = ({ size = 18, className = "" }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    {/* Frog body */}
+    <ellipse cx="12" cy="14" rx="8" ry="6" fill="currentColor" />
+    {/* Frog head */}
+    <ellipse cx="12" cy="10" rx="7" ry="5" fill="currentColor" />
+    {/* Left eye */}
+    <circle cx="9" cy="7" r="2.5" fill="currentColor" />
+    <circle cx="9" cy="7" r="1.2" fill="white" />
+    {/* Right eye */}
+    <circle cx="15" cy="7" r="2.5" fill="currentColor" />
+    <circle cx="15" cy="7" r="1.2" fill="white" />
+    {/* Smile */}
+    <path d="M9 12 Q12 15 15 12" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+    {/* Left leg */}
+    <path d="M5 16 L3 19 L6 18" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+    {/* Right leg */}
+    <path d="M19 16 L21 19 L18 18" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+  </svg>
+);
 
 interface Message {
   role: 'user' | 'assistant' | 'system';
@@ -659,7 +688,7 @@ export default function Home() {
               >
                 {message.role === 'assistant' && (
                   <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center flex-shrink-0">
-                    <Bot size={18} className="text-white" />
+                    <FrogIcon size={18} className="text-white" />
                   </div>
                 )}
 
@@ -710,7 +739,7 @@ export default function Home() {
             {isLoading && (
               <div className="flex justify-start items-center space-x-2">
                 <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center">
-                  <Bot size={18} className="text-white" />
+                  <FrogIcon size={18} className="text-white" />
                 </div>
                 <div className="bg-white/10 border-2 border-white/30 p-3">
                   <div className="flex space-x-2">
