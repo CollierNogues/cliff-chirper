@@ -5,55 +5,40 @@ import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // Custom frog icon component - thick green blob with white belly + eye
 // Frog icon optimized for small sizes (legible at ~20px)
-const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 32 32"
+const FrogIcon = ({ size = 20, className = "" }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    role="img"
-    aria-label="Frog"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    {/* Outer body (thick blob) */}
-    <path
-      d="M7 18
-         C6 15, 7 12, 10 11
-         C12 10, 15 7, 20 8
-         C24 9, 26 12, 25 16
-         C24 21, 19 25, 14 24
-         C10 23, 8 21, 7 18
-         Z"
-      fill="#1f4f35"
-    />
-
-    {/* Small neck/head bump for silhouette */}
-    <path
-      d="M14 10
-         C15 8, 17 6, 20 6
-         C22 6, 23 8, 22 10
-         C21 12, 18 12, 16 12
-         C15 12, 13 12, 14 10
-         Z"
-      fill="#1f4f35"
-    />
-
-    {/* White belly/face */}
-    <path
-      d="M13 14
-         C14 13, 16 12, 18 13
-         C20 14, 20 17, 18 18
-         C16 19, 14 18, 13 17
-         C12 16, 12 15, 13 14
-         Z"
-      fill="#ffffff"
-    />
-
-    {/* Eye rim */}
-    <circle cx="22" cy="10.5" r="2.3" fill="#1f4f35" />
-
-    {/* Eye pupil */}
-    <circle cx="22" cy="10.5" r="1.1" fill="#0f2c1c" />
+    {/* Head shape - wide oval */}
+    <ellipse cx="12" cy="12" rx="8" ry="7" />
+    
+    {/* Left eye bump */}
+    <circle cx="8.5" cy="7" r="2.5" />
+    
+    {/* Right eye bump */}
+    <circle cx="15.5" cy="7" r="2.5" />
+    
+    {/* Left eye pupil (simple dot) */}
+    <circle cx="8.5" cy="7" r="1" fill="currentColor" />
+    
+    {/* Right eye pupil */}
+    <circle cx="15.5" cy="7" r="1" fill="currentColor" />
+    
+    {/* Simple mouth - slight curve */}
+    <path d="M9 14.5 Q12 17 15 14.5" />
+    
+    {/* Optional nostrils */}
+    <circle cx="10.5" cy="11" r="0.6" />
+    <circle cx="13.5" cy="11" r="0.6" />
   </svg>
 );
 
