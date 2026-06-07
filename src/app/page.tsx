@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // Custom frog icon component
-const FrogIcon = ({ size = 18, className = "" }) => (
+const FrogIcon = ({ size = 20, className = "" }) => (
   <svg 
     width={size} 
     height={size} 
@@ -12,23 +12,29 @@ const FrogIcon = ({ size = 18, className = "" }) => (
     fill="none" 
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    {/* Frog body */}
-    <ellipse cx="12" cy="14" rx="8" ry="6" fill="currentColor" />
-    {/* Frog head */}
-    <ellipse cx="12" cy="10" rx="7" ry="5" fill="currentColor" />
-    {/* Left eye */}
-    <circle cx="9" cy="7" r="2.5" fill="currentColor" />
-    <circle cx="9" cy="7" r="1.2" fill="white" />
-    {/* Right eye */}
-    <circle cx="15" cy="7" r="2.5" fill="currentColor" />
-    <circle cx="15" cy="7" r="1.2" fill="white" />
-    {/* Smile */}
-    <path d="M9 12 Q12 15 15 12" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
-    {/* Left leg */}
-    <path d="M5 16 L3 19 L6 18" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-    {/* Right leg */}
-    <path d="M19 16 L21 19 L18 18" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+    {/* Head shape - upside-down U (open bottom) */}
+    <path d="M6 16 C6 9, 8 5, 12 5 C16 5, 18 9, 18 16" />
+    
+    {/* Left eye bump */}
+    <circle cx="8.5" cy="7" r="2.5" />
+    
+    {/* Right eye bump */}
+    <circle cx="15.5" cy="7" r="2.5" />
+    
+    {/* Left eye pupil - outline only */}
+    <circle cx="8.5" cy="7" r="1" />
+    
+    {/* Right eye pupil - outline only */}
+    <circle cx="15.5" cy="7" r="1" />
+    
+    {/* Nostrils - outline only */}
+    <circle cx="10.5" cy="11" r="0.6" />
+    <circle cx="13.5" cy="11" r="0.6" />
   </svg>
 );
 
