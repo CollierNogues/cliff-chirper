@@ -20,21 +20,14 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     {/* Head shape - upside-down U (open bottom) */}
     <path d="M6 16 C6 9, 8 5, 12 5 C16 5, 18 9, 18 16" />
     
-    {/* Left eye bump - smaller */}
+    {/* Left eye bump */}
     <circle cx="8.5" cy="7" r="2" />
     
-    {/* Right eye bump - smaller */}
+    {/* Right eye bump */}
     <circle cx="15.5" cy="7" r="2" />
     
-    {/* Left eye pupil - outline only */}
-    <circle cx="8.5" cy="7" r="0.8" />
-    
-    {/* Right eye pupil - outline only */}
-    <circle cx="15.5" cy="7" r="0.8" />
-    
-    {/* Nostrils - outline only */}
-    <circle cx="10.5" cy="11" r="0.6" />
-    <circle cx="13.5" cy="11" r="0.6" />
+    {/* Flat line mouth */}
+    <line x1="9.5" y1="14" x2="14.5" y2="14" />
   </svg>
 );
 
