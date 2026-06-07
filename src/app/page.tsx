@@ -27,16 +27,13 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     {/* Right eye bump */}
     <circle cx="15.5" cy="7" r="2.5" />
     
-    {/* Left eye pupil (simple dot) */}
+    {/* Left eye pupil */}
     <circle cx="8.5" cy="7" r="1" fill="currentColor" />
     
     {/* Right eye pupil */}
     <circle cx="15.5" cy="7" r="1" fill="currentColor" />
     
-    {/* Simple mouth - slight curve */}
-    <path d="M9 14.5 Q12 17 15 14.5" />
-    
-    {/* Optional nostrils */}
+    {/* Nostrils (optional, can be removed) */}
     <circle cx="10.5" cy="11" r="0.6" />
     <circle cx="13.5" cy="11" r="0.6" />
   </svg>
