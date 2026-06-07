@@ -4,55 +4,56 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // Custom frog icon component - thick green blob with white belly + eye
+// Frog icon optimized for small sizes (legible at ~20px)
 const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg
     width={size}
     height={size}
-    viewBox="0 0 128 128"
+    viewBox="0 0 32 32"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    fill="none"
+    role="img"
+    aria-label="Frog"
   >
-    {/* Outer body */}
+    {/* Outer body (thick blob) */}
     <path
-      d="M23 78
-         C16 70, 18 57, 29 52
-         C39 47, 53 36, 68 34
-         C84 31, 96 38, 105 45
-         C114 52, 116 66, 108 78
-         C100 90, 80 99, 60 100
-         C43 101, 31 93, 23 78
+      d="M7 18
+         C6 15, 7 12, 10 11
+         C12 10, 15 7, 20 8
+         C24 9, 26 12, 25 16
+         C24 21, 19 25, 14 24
+         C10 23, 8 21, 7 18
          Z"
       fill="#1f4f35"
     />
 
-    {/* Head/neck bump smoothing (helps mimic the thick outline look) */}
+    {/* Small neck/head bump for silhouette */}
     <path
-      d="M49 46
-         C50 34, 63 26, 78 26
-         C93 26, 104 36, 104 50
-         C104 63, 92 73, 78 73
-         C64 73, 49 62, 49 46
+      d="M14 10
+         C15 8, 17 6, 20 6
+         C22 6, 23 8, 22 10
+         C21 12, 18 12, 16 12
+         C15 12, 13 12, 14 10
          Z"
       fill="#1f4f35"
     />
 
-    {/* White belly / inner face */}
+    {/* White belly/face */}
     <path
-      d="M42 63
-         C46 52, 60 48, 74 52
-         C90 57, 96 69, 90 79
-         C84 89, 66 92, 54 84
-         C45 78, 39 72, 42 63
+      d="M13 14
+         C14 13, 16 12, 18 13
+         C20 14, 20 17, 18 18
+         C16 19, 14 18, 13 17
+         C12 16, 12 15, 13 14
          Z"
       fill="#ffffff"
     />
 
     {/* Eye rim */}
-    <circle cx="76" cy="40" r="10" fill="#1f4f35" />
+    <circle cx="22" cy="10.5" r="2.3" fill="#1f4f35" />
 
-    {/* Eye pupil (small dark dot) */}
-    <circle cx="76" cy="40" r="4.8" fill="#0f2c1c" />
+    {/* Eye pupil */}
+    <circle cx="22" cy="10.5" r="1.1" fill="#0f2c1c" />
   </svg>
 );
 
