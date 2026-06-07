@@ -9,6 +9,10 @@ interface Message {
   timestamp?: number;
   id: string;
   isFloating?: boolean;
+  isFalling?: boolean;
+  fallX?: number;
+  fallY?: number;
+  rotation?: number;
 }
 
 export default function Home() {
@@ -20,6 +24,7 @@ export default function Home() {
       id: 'system-prompt',
     },
   ]);
+  const [fallingMessages, setFallingMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +39,7 @@ export default function Home() {
   const recognitionRef = useRef<any>(null);
   const continuousListeningRef = useRef(continuousListening);
   const messagesRef = useRef(messages);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -50,6 +56,37 @@ export default function Home() {
 
   useEffect(() => {
     messagesRef.current = messages;
+  }, [messages]);
+
+  // Function to make a message fall like a raindrop
+  const makeMessageFall = (message: Message) => {
+    // Generate random horizontal scatter (-50 to 50 pixels) and slight rotation
+    const scatterX = (Math.random() - 0.5) * 100;
+    const rotation = (Math.random() - 0.5) * 30;
+    
+    setFallingMessages(prev => [...prev, {
+      ...message,
+      isFalling: true,
+      fallX: scatterX,
+      rotation: rotation,
+      timestamp: Date.now()
+    }]);
+
+    // Remove from falling messages after animation completes (3 seconds)
+    setTimeout(() => {
+      setFallingMessages(prev => prev.filter(m => m.id !== message.id));
+    }, 3000);
+  };
+
+  // Trigger falling effect for new messages
+  useEffect(() => {
+    const latestMessage = messages[messages.length - 1];
+    if (latestMessage && latestMessage.role !== 'system' && !latestMessage.isFloating) {
+      const timer = setTimeout(() => {
+        makeMessageFall(latestMessage);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
   }, [messages]);
 
   // Handle auto-submit from speech recognition with fresh state
@@ -98,6 +135,7 @@ export default function Home() {
           content: assistantMessage.content,
           timestamp: Date.now(),
           id: `assistant-${Date.now()}`,
+          isFloating: true,
         },
       ]);
 
@@ -114,6 +152,7 @@ export default function Home() {
           content: errorMsg,
           timestamp: Date.now(),
           id: `error-${Date.now()}`,
+          isFloating: true,
         },
       ]);
       
@@ -470,6 +509,7 @@ export default function Home() {
           content: assistantMessage.content,
           timestamp: Date.now(),
           id: `assistant-${Date.now()}`,
+          isFloating: true,
         },
       ]);
 
@@ -489,6 +529,7 @@ export default function Home() {
           content: errorMsg,
           timestamp: Date.now(),
           id: `error-${Date.now()}`,
+          isFloating: true,
         },
       ]);
       
@@ -507,186 +548,239 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
-      <div className="container mx-auto max-w-4xl px-3 py-8">
-        <div className="bg-white border-4 border-black">
-          <div className="h-[700px] flex flex-col">
-            <div className="p-3 bg-white border-b-4 border-black">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h1 className="text-3xl font-bold text-black" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
-                    AI POET CHAT
-                  </h1>
-                  <p className="text-sm text-black mt-1" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
-                    Chat with Whomp, the French AI poet
-                  </p>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <label className={`flex items-center space-x-2 ${isSpeaking ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}>
-                    <span className="text-xs text-black font-mono uppercase tracking-wider">Continuous Listen</span>
-                    <button
-                      onClick={async () => {
-                        if (isSpeaking) return;
-                        const newValue = !continuousListening;
-                        if (newValue) {
-                          try {
-                            await navigator.mediaDevices.getUserMedia({ audio: true });
-                            console.log('Microphone permission granted');
-                            setContinuousListening(true);
-                            startSpeechRecognition();
-                          } catch (error) {
-                            console.error('Microphone permission denied:', error);
-                            alert('Please allow microphone access to use speech recognition');
-                          }
-                        } else {
-                          setContinuousListening(false);
-                          stopSpeechRecognition();
-                          setInput('');
+    <div className="min-h-screen relative" style={{ backgroundColor: '#2d2d2d', color: 'white', fontFamily: '"Times New Roman", Times, serif', overflowX: 'hidden' }}>
+      {/* Water ripple effect at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 h-32 pointer-events-none" style={{
+        background: 'linear-gradient(to top, rgba(45,45,45,0.9), transparent)',
+        zIndex: 5
+      }}>
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-400/30 animate-pulse"></div>
+      </div>
+
+      {/* Falling messages - raindrop effect */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 10 }}>
+        {fallingMessages.map((msg) => (
+          <div
+            key={msg.id}
+            className="absolute animate-fall"
+            style={{
+              left: `calc(50% + ${msg.fallX || 0}px)`,
+              top: '-100px',
+              transform: `rotate(${msg.rotation || 0}deg)`,
+              animation: `fall 3s ease-in forwards`,
+              maxWidth: '300px',
+              backgroundColor: msg.role === 'user' ? '#000' : '#fff',
+              color: msg.role === 'user' ? '#fff' : '#000',
+              border: '2px solid #000',
+              padding: '8px 12px',
+              fontSize: '12px',
+              fontFamily: '"Times New Roman", Times, serif',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              borderRadius: '4px'
+            }}
+          >
+            {msg.content}
+          </div>
+        ))}
+      </div>
+
+      <div className="container mx-auto max-w-4xl px-3 py-8 relative" style={{ zIndex: 1 }}>
+        {/* Removed white container with borders - now directly showing content on dark background */}
+        <div className="h-[700px] flex flex-col">
+          <div className="p-3 border-b-4 border-white/20">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold text-white" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
+                  RIVER ORACLE
+                </h1>
+                <p className="text-sm text-white/80 mt-1" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
+                  Talk to me when it's raining.
+                </p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <label className={`flex items-center space-x-2 ${isSpeaking ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}>
+                  <span className="text-xs text-white font-mono uppercase tracking-wider">Continuous Listen</span>
+                  <button
+                    onClick={async () => {
+                      if (isSpeaking) return;
+                      const newValue = !continuousListening;
+                      if (newValue) {
+                        try {
+                          await navigator.mediaDevices.getUserMedia({ audio: true });
+                          console.log('Microphone permission granted');
+                          setContinuousListening(true);
+                          startSpeechRecognition();
+                        } catch (error) {
+                          console.error('Microphone permission denied:', error);
+                          alert('Please allow microphone access to use speech recognition');
                         }
-                      }}
-                      disabled={isSpeaking}
-                      className={`border-2 border-black px-3 py-1 text-xs font-mono transition-colors ${
-                        continuousListening ? 'bg-black text-white' : 'bg-white text-black'
-                      } ${isSpeaking ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'}`}
-                    >
-                      {continuousListening ? 'ON' : 'OFF'}
-                    </button>
-                  </label>
-                  {isListening && !isSpeaking && (
-                    <span className="text-xs text-black flex items-center space-x-1 border border-black px-2 py-1 font-mono">
-                      <Mic size={12} className="animate-pulse" />
-                      <span>LISTENING</span>
-                    </span>
-                  )}
-                  {isSpeaking && (
-                    <span className="text-xs text-white bg-black flex items-center space-x-1 border border-black px-2 py-1 font-mono">
-                      <Volume2 size={12} className="animate-pulse" />
-                      <span>SPEAKING</span>
-                    </span>
-                  )}
-                  {continuousListening && !isListening && !isSpeaking && (
-                    <span className="text-xs text-black border border-black px-2 py-1 font-mono">
-                      PAUSED
-                    </span>
-                  )}
-                </div>
+                      } else {
+                        setContinuousListening(false);
+                        stopSpeechRecognition();
+                        setInput('');
+                      }
+                    }}
+                    disabled={isSpeaking}
+                    className={`border-2 border-white px-3 py-1 text-xs font-mono transition-colors ${
+                      continuousListening ? 'bg-white text-black' : 'bg-transparent text-white'
+                    } ${isSpeaking ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'}`}
+                  >
+                    {continuousListening ? 'ON' : 'OFF'}
+                  </button>
+                </label>
+                {isListening && !isSpeaking && (
+                  <span className="text-xs text-white flex items-center space-x-1 border border-white px-2 py-1 font-mono">
+                    <Mic size={12} className="animate-pulse" />
+                    <span>LISTENING</span>
+                  </span>
+                )}
+                {isSpeaking && (
+                  <span className="text-xs text-black bg-white flex items-center space-x-1 border border-white px-2 py-1 font-mono">
+                    <Volume2 size={12} className="animate-pulse" />
+                    <span>SPEAKING</span>
+                  </span>
+                )}
+                {continuousListening && !isListening && !isSpeaking && (
+                  <span className="text-xs text-white border border-white px-2 py-1 font-mono">
+                    PAUSED
+                  </span>
+                )}
               </div>
             </div>
+          </div>
 
-            <div className="flex-1 overflow-y-auto p-3 space-y-4 bg-white">
-              {messages.slice(1).map((message) => (
+          <div className="flex-1 overflow-y-auto p-3 space-y-4" ref={containerRef}>
+            {messages.slice(1).map((message) => (
+              <div
+                key={message.id}
+                className={`flex items-start space-x-2 transition-all duration-500 ${
+                  message.role === 'user' ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                {message.role === 'assistant' && (
+                  <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <Bot size={18} className="text-white" />
+                  </div>
+                )}
+
                 <div
-                  key={message.id}
-                  className={`flex items-start space-x-2 ${
-                    message.role === 'user' ? 'justify-end' : 'justify-start'
+                  className={`flex flex-col max-w-[70%] ${
+                    message.role === 'user' ? 'items-end' : 'items-start'
                   }`}
+                  style={{ fontFamily: '"Times New Roman", Times, serif' }}
                 >
-                  {message.role === 'assistant' && (
-                    <div className="w-8 h-8 border-2 border-black bg-white flex items-center justify-center flex-shrink-0">
-                      <Bot size={18} className="text-black" />
-                    </div>
-                  )}
-
                   <div
-                    className={`flex flex-col max-w-[70%] ${
-                      message.role === 'user' ? 'items-end' : 'items-start'
+                    className={`border-2 p-3 ${
+                      message.role === 'user'
+                        ? 'bg-white text-black border-white'
+                        : 'bg-white/10 text-white border-white/30'
                     }`}
-                    style={{ fontFamily: '"Times New Roman", Times, serif' }}
                   >
-                    <div
-                      className={`border-2 border-black p-3 ${
-                        message.role === 'user'
-                          ? 'bg-black text-white'
-                          : 'bg-white text-black'
-                      }`}
-                    >
-                      <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
-                    </div>
-
-                    {message.role === 'assistant' && (
-                      <button
-                        onClick={() => speakText(message.content)}
-                        className="mt-1 text-black hover:opacity-60 transition-opacity border border-black px-2 py-1 bg-white text-xs font-mono"
-                        aria-label="Text to speech"
-                      >
-                        <div className="flex items-center space-x-1">
-                          <Volume2 size={12} />
-                          <span>PLAY</span>
-                        </div>
-                      </button>
-                    )}
-
-                    {message.timestamp && (
-                      <span className="text-xs text-black mt-1 font-mono">
-                        {new Date(message.timestamp).toLocaleTimeString()}
-                      </span>
-                    )}
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
                   </div>
 
-                  {message.role === 'user' && (
-                    <div className="w-8 h-8 border-2 border-black bg-white flex items-center justify-center flex-shrink-0">
-                      <User size={18} className="text-black" />
-                    </div>
+                  {message.role === 'assistant' && (
+                    <button
+                      onClick={() => speakText(message.content)}
+                      className="mt-1 text-white/80 hover:text-white transition-opacity border border-white/30 px-2 py-1 bg-white/10 text-xs font-mono"
+                      aria-label="Text to speech"
+                    >
+                      <div className="flex items-center space-x-1">
+                        <Volume2 size={12} />
+                        <span>PLAY</span>
+                      </div>
+                    </button>
+                  )}
+
+                  {message.timestamp && (
+                    <span className="text-xs text-white/60 mt-1 font-mono">
+                      {new Date(message.timestamp).toLocaleTimeString()}
+                    </span>
                   )}
                 </div>
-              ))}
 
-              {isLoading && (
-                <div className="flex justify-start items-center space-x-2">
-                  <div className="w-8 h-8 border-2 border-black bg-white flex items-center justify-center">
-                    <Bot size={18} className="text-black" />
+                {message.role === 'user' && (
+                  <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <User size={18} className="text-white" />
                   </div>
-                  <div className="bg-white border-2 border-black p-3">
-                    <div className="flex space-x-2">
-                      <div className="w-2 h-2 bg-black animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                      <div className="w-2 h-2 bg-black animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                      <div className="w-2 h-2 bg-black animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                    </div>
+                )}
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex justify-start items-center space-x-2">
+                <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center">
+                  <Bot size={18} className="text-white" />
+                </div>
+                <div className="bg-white/10 border-2 border-white/30 p-3">
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 bg-white animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-2 h-2 bg-white animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-2 h-2 bg-white animate-bounce" style={{ animationDelay: '300ms' }}></div>
                   </div>
                 </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
 
-            <div className="p-3 bg-white border-t-4 border-black">
-              <form onSubmit={handleSubmit} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={isListening ? ">>> LISTENING... SPEAK NOW" : "Type your message..."}
-                  className={`flex-1 p-2 border-2 border-black focus:outline-none transition-all text-sm ${
-                    isListening ? 'bg-black text-white placeholder-white font-mono' : 'bg-white text-black'
-                  }`}
-                  style={{ fontFamily: isListening ? 'monospace' : '"Times New Roman", Times, serif' }}
-                  disabled={isLoading}
-                  readOnly={isListening}
-                />
-                <button
-                  type="button"
-                  onClick={isRecording ? stopRecording : startRecording}
-                  className={`p-2 border-2 border-black transition-colors ${
-                    isRecording
-                      ? 'bg-black text-white animate-pulse'
-                      : 'bg-white text-black hover:opacity-60'
-                  }`}
-                  disabled={isLoading || continuousListening}
-                  title={continuousListening ? 'Mic is auto-managed in continuous mode' : 'Push to talk'}
-                >
-                  {isRecording ? <Square size={18} /> : <Mic size={18} />}
-                </button>
-                <button
-                  type="submit"
-                  className="p-2 bg-black text-white border-2 border-black hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={!input.trim() || isLoading}
-                >
-                  <Send size={18} />
-                </button>
-              </form>
-            </div>
+          <div className="p-3 border-t-4 border-white/20">
+            <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={isListening ? ">>> LISTENING... SPEAK NOW" : "Type your message..."}
+                className={`flex-1 p-2 border-2 focus:outline-none transition-all text-sm ${
+                  isListening 
+                    ? 'bg-white text-black border-white placeholder-black font-mono' 
+                    : 'bg-white/10 text-white border-white/30 placeholder-white/50'
+                }`}
+                style={{ fontFamily: isListening ? 'monospace' : '"Times New Roman", Times, serif' }}
+                disabled={isLoading}
+                readOnly={isListening}
+              />
+              <button
+                type="button"
+                onClick={isRecording ? stopRecording : startRecording}
+                className={`p-2 border-2 transition-colors ${
+                  isRecording
+                    ? 'bg-white text-black border-white animate-pulse'
+                    : 'bg-white/10 text-white border-white/30 hover:bg-white/20'
+                }`}
+                disabled={isLoading || continuousListening}
+                title={continuousListening ? 'Mic is auto-managed in continuous mode' : 'Push to talk'}
+              >
+                {isRecording ? <Square size={18} /> : <Mic size={18} />}
+              </button>
+              <button
+                type="submit"
+                className="p-2 bg-white text-black border-2 border-white hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!input.trim() || isLoading}
+              >
+                <Send size={18} />
+              </button>
+            </form>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fall {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(calc(100vh + 100px)) rotate(var(--rotation, 0deg));
+            opacity: 0.3;
+          }
+        }
+        
+        .animate-fall {
+          animation: fall 3s ease-in forwards;
+        }
+      `}</style>
     </div>
   );
 }
