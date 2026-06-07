@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Angular frog icon component - facing right with geometric lines
-const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
+// Custom frog icon component - angular geometric style facing right
+const FrogIcon = ({ size = 20, className = "" }) => (
   <svg 
     width={size} 
     height={size} 
@@ -13,28 +13,32 @@ const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: st
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="miter"
-    strokeLinejoin="miter"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    {/* Main body - angular trapezoid pointing right */}
-    <path d="M5 8 L13 6 L19 10 L17 16 L11 18 L5 16 Z" />
+    {/* Angular body - geometric polygon shape */}
+    <polygon points="6,16 8,8 14,7 18,9 19,14 17,18 10,19 7,18" />
     
-    {/* Head/snout - triangular extension facing right */}
-    <path d="M13 6 L21 9 L19 13 L17 16" />
+    {/* Angular head - pointed toward right */}
+    <polygon points="13,7 16,5 19,8 17,10 14,9" />
     
-    {/* Eye - angular square */}
-    <rect x="15" y="7.5" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+    {/* Right eye (front-facing, angular) */}
+    <polygon points="16,5.5 17.5,4.5 18.5,5.5 17.5,6.5" />
     
-    {/* Characteristic angular hind leg - sharp zigzag pointing back */}
-    <path d="M5 16 L1 18 L2 22" />
-    <path d="M5 14 L7 17" />
+    {/* Left eye (side view, angular) */}
+    <polygon points="13.5,6.5 14.5,5.5 15,6.5 14.5,7" />
     
-    {/* Front leg - sharp angle pointing down-forward */}
-    <path d="M11 18 L15 21 L13 23" />
+    {/* Angular smile/mouth line */}
+    <polyline points="17,11 18.5,11.5 19,12" />
     
-    {/* Throat line detail */}
-    <path d="M14 12 L16 13" />
+    {/* Back legs - angular */}
+    <polyline points="6.5,16.5 4,18 5.5,18.5" />
+    <polyline points="7,17.5 5,19 6.5,19.5" />
+    
+    {/* Front legs - angular */}
+    <polyline points="16,14 18.5,15 17.5,16" />
+    <polyline points="15,14.5 17,16 16,17" />
   </svg>
 );
 
@@ -66,15 +70,15 @@ export default function Home() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [continuousListening, setContinuousListening] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const mediaRecorderRef = useRef<<MediaRecorder | null>(null);
-  const chunksRef = useRef<<Blob[]>([]);
-  const messagesEndRef = useRef<<HTMLDivElement>(null);
-  const streamRef = useRef<<MediaStream | null>(null);
-  const audioRef = useRef<<HTMLAudioElement | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const recognitionRef = useRef<any>(null);
   const continuousListeningRef = useRef(continuousListening);
   const messagesRef = useRef(messages);
-  const containerRef = useRef<<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
