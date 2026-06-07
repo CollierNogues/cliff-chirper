@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Custom frog icon component - simple white outline
+// Custom frog icon component - simple silhouette outline
 const FrogIcon = ({ size = 18, className = "" }) => (
   <svg 
     width={size} 
@@ -13,26 +13,26 @@ const FrogIcon = ({ size = 18, className = "" }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     stroke="currentColor"
-    strokeWidth="1.5"
+    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    {/* Frog body outline */}
-    <ellipse cx="12" cy="14" rx="7" ry="5.5" />
-    {/* Frog head outline */}
-    <ellipse cx="12" cy="9.5" rx="6" ry="4.5" />
-    {/* Left eye outline */}
-    <circle cx="9" cy="7" r="2" />
-    <circle cx="9" cy="7" r="0.8" fill="currentColor" />
-    {/* Right eye outline */}
-    <circle cx="15" cy="7" r="2" />
-    <circle cx="15" cy="7" r="0.8" fill="currentColor" />
-    {/* Smile */}
-    <path d="M9.5 11.5 Q12 14 14.5 11.5" />
-    {/* Left leg */}
-    <path d="M5.5 16 L3.5 18.5 L6 17.5" />
-    {/* Right leg */}
-    <path d="M18.5 16 L20.5 18.5 L18 17.5" />
+    {/* Frog body silhouette - rounded sitting frog shape */}
+    <path d="M6 16 C6 12, 8 8, 12 8 C16 8, 18 12, 18 16 C18 18, 17 19, 12 19 C7 19, 6 18, 6 16Z" />
+    {/* Frog head */}
+    <path d="M8 9 C8 6, 10 5, 12 5 C14 5, 16 6, 16 9" />
+    {/* Left eye bump */}
+    <circle cx="9.5" cy="5.5" r="1.8" />
+    {/* Right eye bump */}
+    <circle cx="14.5" cy="5.5" r="1.8" />
+    {/* Left back leg */}
+    <path d="M6 17 L3 19 L5.5 18.5" />
+    {/* Right back leg */}
+    <path d="M18 17 L21 19 L18.5 18.5" />
+    {/* Left front leg */}
+    <path d="M7 13 L4 14 L7 14.5" />
+    {/* Right front leg */}
+    <path d="M17 13 L20 14 L17 14.5" />
   </svg>
 );
 
@@ -692,7 +692,7 @@ export default function Home() {
               >
                 {message.role === 'assistant' && (
                   <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center flex-shrink-0">
-                    <FrogIcon size={18} className="text-white" />
+                    <FrogIcon size={20} className="text-white" />
                   </div>
                 )}
 
@@ -743,7 +743,7 @@ export default function Home() {
             {isLoading && (
               <div className="flex justify-start items-center space-x-2">
                 <div className="w-8 h-8 border-2 border-white/30 bg-white/10 flex items-center justify-center">
-                  <FrogIcon size={18} className="text-white" />
+                  <FrogIcon size={20} className="text-white" />
                 </div>
                 <div className="bg-white/10 border-2 border-white/30 p-3">
                   <div className="flex space-x-2">
