@@ -5,26 +5,9 @@ import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // ============================================
 // CUSTOMIZATION: Replace this with your JPG filename
-const BACKGROUND_IMAGE = 'your-image-name.jpg'; // <-- CHANGE THIS
+const BACKGROUND_IMAGE = 'canyon-springs-river-park-2-oct-2025.jpg'; // <-- CHANGE THIS
 // ============================================
 
-// Simple open circle icon
-const OpenCircleIcon = ({ size = 18, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="12" cy="12" r="8" />
-  </svg>
-);
 
 // Frog icon - outline with flat mouth
 const FrogIcon = ({ size = 20, className = "" }) => (
