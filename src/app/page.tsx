@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Custom frog icon component - minimalistic stylized line icon
+// Custom frog icon component - facing right, minimalistic stylized line icon
 const FrogIcon = ({ size = 20, className = "" }) => (
   <svg 
     width={size} 
@@ -17,28 +17,32 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    {/* Main body: simple rounded shape */}
-    <path d="M5 15 C5 10, 8 7, 12 7 C16 7, 19 10, 19 15 C19 18, 17 19, 12 19 C7 19, 5 18, 5 15Z" />
+    {/* Main body: rounded sitting shape, facing right */}
+    <path d="M7 15 C7 10, 10 7, 14 7 C18 7, 19 10, 19 15 C19 18, 17 19, 12 19 C9 19, 7 18, 7 15Z" />
     
-    {/* Head: simple curved top */}
-    <path d="M8 9 C8 5.5, 10 4.5, 12 4.5 C14 4.5, 16 5.5, 16 9" />
+    {/* Head: pointing right */}
+    <path d="M14 9 C16 8, 18 9, 19 11" />
+    <path d="M14 9 C14 6, 15 5, 16 5" />
     
-    {/* Left eye: simple circle */}
-    <circle cx="9" cy="6" r="1.8" />
+    {/* Right eye (visible, facing forward/right) */}
+    <circle cx="16.5" cy="7.5" r="1.5" />
+    <circle cx="17" cy="7" r="0.6" fill="currentColor" />
     
-    {/* Right eye: simple circle */}
-    <circle cx="15" cy="6" r="1.8" />
+    {/* Left eye (partially visible from side) */}
+    <circle cx="14" cy="8" r="1.2" />
     
-    {/* Back legs: simple curved lines */}
-    <path d="M5.5 16 L3 18.5" />
-    <path d="M18.5 16 L21 18.5" />
+    {/* Smile/hint of mouth */}
+    <path d="M17 12.5 C18 13, 18.5 12.5, 19 12" />
     
-    {/* Front legs: simple curved lines */}
-    <path d="M7 12.5 L4.5 14" />
-    <path d="M17 12.5 L19.5 14" />
+    {/* Back legs */}
+    <path d="M7.5 16 L5 18.5" />
+    <path d="M8 17.5 L6 19.5" />
+    
+    {/* Front legs */}
+    <path d="M16 13 L18.5 14.5" />
+    <path d="M15 14 L17 15.5" />
   </svg>
 );
-
 
 interface Message {
   role: 'user' | 'assistant' | 'system';
