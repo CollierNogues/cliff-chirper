@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Custom frog icon component - facing right, minimalistic stylized line icon
-const FrogIcon = ({ size = 20, className = "" }) => (
+// Angular frog icon component - facing right with geometric lines
+const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg 
     width={size} 
     height={size} 
@@ -14,33 +14,27 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     className={className}
     stroke="currentColor"
     strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    strokeLinecap="miter"
+    strokeLinejoin="miter"
   >
-    {/* Main body: rounded sitting shape, facing right */}
-    <path d="M7 15 C7 10, 10 7, 14 7 C18 7, 19 10, 19 15 C19 18, 17 19, 12 19 C9 19, 7 18, 7 15Z" />
+    {/* Main body - angular trapezoid pointing right */}
+    <path d="M5 8 L13 6 L19 10 L17 16 L11 18 L5 16 Z" />
     
-    {/* Head: pointing right */}
-    <path d="M14 9 C16 8, 18 9, 19 11" />
-    <path d="M14 9 C14 6, 15 5, 16 5" />
+    {/* Head/snout - triangular extension facing right */}
+    <path d="M13 6 L21 9 L19 13 L17 16" />
     
-    {/* Right eye (visible, facing forward/right) */}
-    <circle cx="16.5" cy="7.5" r="1.5" />
-    <circle cx="17" cy="7" r="0.6" fill="currentColor" />
+    {/* Eye - angular square */}
+    <rect x="15" y="7.5" width="2.5" height="2.5" fill="currentColor" stroke="none" />
     
-    {/* Left eye (partially visible from side) */}
-    <circle cx="14" cy="8" r="1.2" />
+    {/* Characteristic angular hind leg - sharp zigzag pointing back */}
+    <path d="M5 16 L1 18 L2 22" />
+    <path d="M5 14 L7 17" />
     
-    {/* Smile/hint of mouth */}
-    <path d="M17 12.5 C18 13, 18.5 12.5, 19 12" />
+    {/* Front leg - sharp angle pointing down-forward */}
+    <path d="M11 18 L15 21 L13 23" />
     
-    {/* Back legs */}
-    <path d="M7.5 16 L5 18.5" />
-    <path d="M8 17.5 L6 19.5" />
-    
-    {/* Front legs */}
-    <path d="M16 13 L18.5 14.5" />
-    <path d="M15 14 L17 15.5" />
+    {/* Throat line detail */}
+    <path d="M14 12 L16 13" />
   </svg>
 );
 
@@ -72,15 +66,15 @@ export default function Home() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [continuousListening, setContinuousListening] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<Blob[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const mediaRecorderRef = useRef<<MediaRecorder | null>(null);
+  const chunksRef = useRef<<Blob[]>([]);
+  const messagesEndRef = useRef<<HTMLDivElement>(null);
+  const streamRef = useRef<<MediaStream | null>(null);
+  const audioRef = useRef<<HTMLAudioElement | null>(null);
   const recognitionRef = useRef<any>(null);
   const continuousListeningRef = useRef(continuousListening);
   const messagesRef = useRef(messages);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
