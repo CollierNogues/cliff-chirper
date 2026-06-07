@@ -18,8 +18,8 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    {/* Head shape - wide oval */}
-    <ellipse cx="12" cy="12" rx="8" ry="7" />
+    {/* Head shape - upside-down U (open bottom) */}
+    <path d="M6 16 C6 9, 8 5, 12 5 C16 5, 18 9, 18 16" />
     
     {/* Left eye bump */}
     <circle cx="8.5" cy="7" r="2.5" />
@@ -33,7 +33,7 @@ const FrogIcon = ({ size = 20, className = "" }) => (
     {/* Right eye pupil */}
     <circle cx="15.5" cy="7" r="1" fill="currentColor" />
     
-    {/* Nostrils (optional, can be removed) */}
+    {/* Nostrils */}
     <circle cx="10.5" cy="11" r="0.6" />
     <circle cx="13.5" cy="11" r="0.6" />
   </svg>
