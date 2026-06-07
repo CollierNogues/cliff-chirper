@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Custom frog icon component - simple silhouette outline
-const FrogIcon = ({ size = 18, className = "" }) => (
+// Custom frog icon component - minimalistic stylized line icon
+const FrogIcon = ({ size = 20, className = "" }) => (
   <svg 
     width={size} 
     height={size} 
@@ -13,28 +13,32 @@ const FrogIcon = ({ size = 18, className = "" }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     stroke="currentColor"
-    strokeWidth="1.8"
+    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    {/* Frog body silhouette - rounded sitting frog shape */}
-    <path d="M6 16 C6 12, 8 8, 12 8 C16 8, 18 12, 18 16 C18 18, 17 19, 12 19 C7 19, 6 18, 6 16Z" />
-    {/* Frog head */}
-    <path d="M8 9 C8 6, 10 5, 12 5 C14 5, 16 6, 16 9" />
-    {/* Left eye bump */}
-    <circle cx="9.5" cy="5.5" r="1.8" />
-    {/* Right eye bump */}
-    <circle cx="14.5" cy="5.5" r="1.8" />
-    {/* Left back leg */}
-    <path d="M6 17 L3 19 L5.5 18.5" />
-    {/* Right back leg */}
-    <path d="M18 17 L21 19 L18.5 18.5" />
-    {/* Left front leg */}
-    <path d="M7 13 L4 14 L7 14.5" />
-    {/* Right front leg */}
-    <path d="M17 13 L20 14 L17 14.5" />
+    {/* Main body: simple rounded shape */}
+    <path d="M5 15 C5 10, 8 7, 12 7 C16 7, 19 10, 19 15 C19 18, 17 19, 12 19 C7 19, 5 18, 5 15Z" />
+    
+    {/* Head: simple curved top */}
+    <path d="M8 9 C8 5.5, 10 4.5, 12 4.5 C14 4.5, 16 5.5, 16 9" />
+    
+    {/* Left eye: simple circle */}
+    <circle cx="9" cy="6" r="1.8" />
+    
+    {/* Right eye: simple circle */}
+    <circle cx="15" cy="6" r="1.8" />
+    
+    {/* Back legs: simple curved lines */}
+    <path d="M5.5 16 L3 18.5" />
+    <path d="M18.5 16 L21 18.5" />
+    
+    {/* Front legs: simple curved lines */}
+    <path d="M7 12.5 L4.5 14" />
+    <path d="M17 12.5 L19.5 14" />
   </svg>
 );
+
 
 interface Message {
   role: 'user' | 'assistant' | 'system';
