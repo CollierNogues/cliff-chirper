@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Detailed frog icon facing right, optimized for 40px size
 // Simple circle outline icon
 const CircleIcon = ({ size = 20, className = "" }) => (
   <svg 
