@@ -5,8 +5,8 @@ import { Send, Volume2, User, Play, Pause } from 'lucide-react';
 
 // ============================================
 // CUSTOMIZATION: Replace these with your actual filenames
-const BACKGROUND_IMAGE = 'your-image-name.jpg'; // <-- CHANGE THIS
-const SOUNDTRACK_MP3 = 'your-soundtrack.mp3'; // <-- CHANGE THIS to your mp3 filename
+const BACKGROUND_IMAGE = 'canyon-springs-river-park-2-oct-2025.jpg'; // <-- CHANGE THIS
+const SOUNDTRACK_MP3 = 'cliff-chirping-frog-chris-harrison-xeno-canto.mp3'; // <-- CHANGE THIS to your mp3 filename
 // ============================================
 
 // Frog icon - outline with flat mouth
