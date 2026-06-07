@@ -4,51 +4,56 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
 // Detailed frog icon facing right, optimized for 40px size
-const FrogIcon = ({ size = 40, className = "" }) => (
+// Frog icon optimized for small sizes and driven by currentColor
+const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg
     width={size}
     height={size}
-    viewBox="0 0 24 24"
-    fill="none"
+    viewBox="0 0 32 32"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    role="img"
+    aria-label="Frog"
   >
-    {/* Body (rounded rear, tapering to head) */}
-    <path d="M14,7 C18,7 21,10 21,14 C21,17 18,20 13,20 C8,20 5,17 5,13 C5,9 9,7 14,7 Z" />
+    {/* Main body (uses currentColor) */}
+    <path
+      d="M7 18
+         C6 15, 7 12, 10 11
+         C12 10, 15 7, 20 8
+         C24 9, 26 12, 25 16
+         C24 21, 19 25, 14 24
+         C10 23, 8 21, 7 18
+         Z"
+      fill="currentColor"
+    />
 
-    {/* Head and snout (right side) */}
-    <path d="M14,7 C16,7 19,8 20,10.5 C20.5,11.8 20,13 19,13.5 C18,14 16,13.5 15,13" />
+    {/* Neck/head smoothing bump (uses currentColor) */}
+    <path
+      d="M14 10
+         C15 8, 17 6, 20 6
+         C22 6, 23 8, 22 10
+         C21 12, 18 12, 16 12
+         C15 12, 13 12, 14 10
+         Z"
+      fill="currentColor"
+    />
 
-    {/* Bulging eye (on top of head) */}
-    <circle cx="15.5" cy="7.8" r="2.2" />
+    {/* Belly/face (white) */}
+    <path
+      d="M13 14
+         C14 13, 16 12, 18 13
+         C20 14, 20 17, 18 18
+         C16 19, 14 18, 13 17
+         C12 16, 12 15, 13 14
+         Z"
+      fill="#ffffff"
+    />
 
-    {/* Eye pupil (looking right) */}
-    <circle cx="16.3" cy="7.6" r="1" fill="currentColor" />
+    {/* Eye rim (uses currentColor) */}
+    <circle cx="22" cy="10.5" r="2.3" fill="currentColor" />
 
-    {/* Eye highlight */}
-    <circle cx="16.8" cy="7.1" r="0.4" fill="white" />
-
-    {/* Mouth – wide frog smile */}
-    <path d="M16.5,12.5 Q19,13 19.5,11.5" />
-
-    {/* Nostril */}
-    <circle cx="18.5" cy="10.5" r="0.5" />
-
-    {/* Front leg with toes (right side) */}
-    <path d="M18,16 L19.5,18 M18,16 L20,17.5 M18,16 L20.5,18" />
-
-    {/* Hind leg (folded, frog-like) */}
-    <path d="M12,18 C10,19 8,19.5 7,18.5 C6,17.5 7,16 8.5,15.5" />
-
-    {/* Hind foot with webbing hint */}
-    <path d="M7,18.5 L5.5,19 M7,18.5 L6,20 M7,18.5 L4.5,19.5" />
-
-    {/* Belly / underbelly line for depth */}
-    <path d="M11,19 C9,19 7,18 6.5,16" strokeWidth="1" strokeOpacity="0.6" />
+    {/* Eye pupil (slightly darker than currentColor if currentColor is light) */}
+    <circle cx="22" cy="10.5" r="1.1" fill="#0f2c1c" />
   </svg>
 );
 
