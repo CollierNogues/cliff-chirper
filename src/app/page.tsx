@@ -3,6 +3,39 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
+// Custom frog icon component - simple white outline
+const FrogIcon = ({ size = 18, className = "" }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    {/* Frog body outline */}
+    <ellipse cx="12" cy="14" rx="7" ry="5.5" />
+    {/* Frog head outline */}
+    <ellipse cx="12" cy="9.5" rx="6" ry="4.5" />
+    {/* Left eye outline */}
+    <circle cx="9" cy="7" r="2" />
+    <circle cx="9" cy="7" r="0.8" fill="currentColor" />
+    {/* Right eye outline */}
+    <circle cx="15" cy="7" r="2" />
+    <circle cx="15" cy="7" r="0.8" fill="currentColor" />
+    {/* Smile */}
+    <path d="M9.5 11.5 Q12 14 14.5 11.5" />
+    {/* Left leg */}
+    <path d="M5.5 16 L3.5 18.5 L6 17.5" />
+    {/* Right leg */}
+    <path d="M18.5 16 L20.5 18.5 L18 17.5" />
+  </svg>
+);
+
 interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -14,34 +47,6 @@ interface Message {
   fallY?: number;
   rotation?: number;
 }
-
-// Frog outline icon component
-const FrogIcon = ({ size = 18, className = "" }: { size?: number; className?: string }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    {/* Frog face outline */}
-    <circle cx="12" cy="13" r="7" />
-    {/* Left eye */}
-    <circle cx="9" cy="9" r="2" />
-    {/* Right eye */}
-    <circle cx="15" cy="9" r="2" />
-    {/* Left eye pupil */}
-    <circle cx="9" cy="9" r="0.5" fill="currentColor" stroke="none" />
-    {/* Right eye pupil */}
-    <circle cx="15" cy="9" r="0.5" fill="currentColor" stroke="none" />
-    {/* Smile */}
-    <path d="M9 16 Q12 18 15 16" />
-  </svg>
-);
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
@@ -59,15 +64,15 @@ export default function Home() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [continuousListening, setContinuousListening] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const mediaRecorderRef = useRef<<MediaRecorder | null>(null);
-  const chunksRef = useRef<<Blob[]>([]);
-  const messagesEndRef = useRef<<HTMLDivElement>(null);
-  const streamRef = useRef<<MediaStream | null>(null);
-  const audioRef = useRef<<HTMLAudioElement | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const recognitionRef = useRef<any>(null);
   const continuousListeningRef = useRef(continuousListening);
   const messagesRef = useRef(messages);
-  const containerRef = useRef<<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
