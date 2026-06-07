@@ -507,7 +507,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#2d2d2d', color: 'white', fontFamily: '"Times New Roman", Times, serif' }}>
       <div className="container mx-auto max-w-4xl px-3 py-8">
         <div className="bg-white border-4 border-black">
           <div className="h-[700px] flex flex-col">
