@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Send, Volume2, User } from 'lucide-react';
 
-// Angular frog icon component - facing right with geometric lines
-const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
+// Custom frog icon component - minimalist angular frog (back slope, one leg, face)
+const FrogIcon = ({ size = 20, className = "" }) => (
   <svg 
     width={size} 
     height={size} 
@@ -13,28 +13,25 @@ const FrogIcon = ({ size = 20, className = "" }: { size?: number; className?: st
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="miter"
-    strokeLinejoin="miter"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    {/* Main body - angular trapezoid pointing right */}
-    <path d="M5 8 L13 6 L19 10 L17 16 L11 18 L5 16 Z" />
+    {/* Slope of the frog's back - curved/angled line from rear to head */}
+    <path d="M5 16 L8 8 L14 6 L18 9" />
     
-    {/* Head/snout - triangular extension facing right */}
-    <path d="M13 6 L21 9 L19 13 L17 16" />
+    {/* Frog leg - single angular back leg */}
+    <polyline points="5,16 3,18.5 5.5,19" />
     
-    {/* Eye - angular square */}
-    <rect x="15" y="7.5" width="2.5" height="2.5" fill="currentColor" stroke="none" />
+    {/* Frog face - angular, facing right */}
+    {/* Jaw/chin line */}
+    <polyline points="18,9 19.5,11 18.5,12.5" />
     
-    {/* Characteristic angular hind leg - sharp zigzag pointing back */}
-    <path d="M5 16 L1 18 L2 22" />
-    <path d="M5 14 L7 17" />
+    {/* Eye - angular geometric */}
+    <polygon points="16.5,7 18,6 18.5,7.5 17,8" />
     
-    {/* Front leg - sharp angle pointing down-forward */}
-    <path d="M11 18 L15 21 L13 23" />
-    
-    {/* Throat line detail */}
-    <path d="M14 12 L16 13" />
+    {/* Nostril/snout detail */}
+    <line x1="19" y1="10" x2="20" y2="10.5" />
   </svg>
 );
 
