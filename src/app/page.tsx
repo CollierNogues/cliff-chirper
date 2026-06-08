@@ -298,7 +298,7 @@ export default function Home() {
                   RIVER ORACLE
                 </h1>
                 <p className="text-sm text-white/80 mt-1" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
-                  Talk to me when it's raining.
+                  I come out and sing at dusk.
                 </p>
               </div>
               <div className="flex items-center space-x-3">
